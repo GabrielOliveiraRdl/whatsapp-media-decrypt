@@ -1,0 +1,9 @@
+{
+  "name": "whatsapp-media-decrypt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "wa-decrypt-nodejs": "^1.0.6"
+  }
+}
