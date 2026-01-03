@@ -1,6 +1,8 @@
 import express from "express";
 import multer from "multer";
-import makeWASocket, { downloadMediaMessage } from "@whiskeysockets/baileys";
+import pkg from "@whiskeysockets/baileys";
+
+const { makeWASocket, downloadMediaMessage } = pkg;
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
