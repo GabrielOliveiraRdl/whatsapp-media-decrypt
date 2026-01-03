@@ -1,9 +1,10 @@
 {
   "name": "whatsapp-media-decrypt",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "dependencies": {
     "express": "^4.18.2",
-    "wa-decrypt-nodejs": "^1.0.6"
+    "multer": "^1.4.5",
+    "@whiskeysockets/baileys": "^6.7.0"
   }
 }
