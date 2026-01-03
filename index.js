@@ -1,7 +1,8 @@
 import express from "express";
 import multer from "multer";
-import fs from "fs";
-import { decryptMediaMessage } from "@whiskeysockets/baileys";
+import baileys from "@whiskeysockets/baileys";
+
+const { decryptMediaMessage } = baileys;
 
 const app = express();
 const upload = multer({ dest: "/tmp" });
@@ -20,10 +21,14 @@ app.post("/decrypt", upload.single("file"), async (req, res) => {
       {}
     );
 
-    res.setHeader("Content-Type", message.mimetype || "application/octet-stream");
+    res.setHeader(
+      "Content-Type",
+      message.mimetype || "application/octet-stream"
+    );
+
     res.send(buffer);
   } catch (err) {
-    console.error(err);
+    console.error("DECRYPT ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
