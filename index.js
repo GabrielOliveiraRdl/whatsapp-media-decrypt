@@ -1,34 +1,40 @@
 import express from "express";
 import multer from "multer";
-import baileys from "@whiskeysockets/baileys";
-
-const { decryptMediaMessage } = baileys;
+import makeWASocket, { downloadMediaMessage } from "@whiskeysockets/baileys";
 
 const app = express();
-const upload = multer({ dest: "/tmp" });
+const upload = multer({ storage: multer.memoryStorage() });
+
+// socket fake (não conecta no WhatsApp)
+const sock = makeWASocket({
+  auth: {},
+  printQRInTerminal: false,
+});
 
 app.post("/decrypt", upload.single("file"), async (req, res) => {
   try {
-    if (!req.file || !req.body.message) {
-      return res.status(400).json({ error: "file ou message ausente" });
+    if (!req.body.message) {
+      return res.status(400).json({ error: "message ausente" });
     }
 
     const message = JSON.parse(req.body.message);
 
-    const buffer = await decryptMediaMessage(
+    const buffer = await downloadMediaMessage(
       message,
       "buffer",
-      {}
+      {},
+      { logger: undefined }
     );
 
     res.setHeader(
       "Content-Type",
-      message.mimetype || "application/octet-stream"
+      message.message?.documentMessage?.mimetype ||
+        "application/octet-stream"
     );
 
     res.send(buffer);
   } catch (err) {
-    console.error("DECRYPT ERROR:", err);
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
